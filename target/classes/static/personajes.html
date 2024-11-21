@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personajes de Los Originales</title>
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #1c1c1c;
+            color: #ed0707;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header, footer {
+            margin-bottom: 20px;
+        }
+
+        /* Barra de navegación */
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+
+        /* Contenedor de personajes */
+        .character-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .character-card {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .character-image {
+            border-radius: 10px;
+            width: 100%;
+            height: auto;
+        }
+
+        .character-name {
+            font-size: 18px;
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        .character-description {
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #bbb;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Personajes de Los Originales</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="personajes.html">Personajes</a></li>
+            <li><a href="temporadas.html">Temporadas</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="character-container">
+    <div id="character-list"></div>
+</section>
+
+<footer>
+    <p>Desarrollado por Luis Cohecha | Fecha de creación: 4/11/2024</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/api/personajes')
+            .then(response => response.json())
+            .then(data => {
+                const characterList = document.getElementById('character-list');
+                data.forEach(personaje => {
+                    const characterCard = document.createElement('div');
+                    characterCard.className = 'character-card';
+
+                    characterCard.innerHTML = `
+                            <img src="${personaje.fotoUrl}" alt="${personaje.nombre}" class="character-image">
+                            <h3 class="character-name">${personaje.nombre}</h3>
+                            <p class="character-description">${personaje.descripcion}</p>
+                        `;
+
+                    characterList.appendChild(characterCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error al cargar los personajes:', error);
+                document.getElementById('character-list').innerHTML = `
+                        <p style="color: red;">Error al cargar los personajes. Inténtalo más tarde.</p>
+                    `;
+            });
+    });
+</script>
+</body>
+</html>
